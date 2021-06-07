@@ -12,7 +12,9 @@ Depends:
 Imports:
   stats,
   glmnet,
-  magrittr
+  magrittr,
+  ggdendro,
+  ggplot2
 Suggests: 
     knitr,
     rmarkdown

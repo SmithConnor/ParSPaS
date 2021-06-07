@@ -2,12 +2,12 @@
 #' @param
 
 parspas = function(x,
-                   y
+                   y,
                    B,
                    c,
                    family){
   n = base::nrow(x) # Number of observations
-  p = bas::ncol(x) # Number of variables
+  p = base::ncol(x) # Number of variables
   varNames = base::colnames(x) # Variable names
 
   bootWeights = base::matrix(stats::rexp(n = n*B,
@@ -45,10 +45,10 @@ parspas = function(x,
                    p = p,
                    B = B)
 
-  nonZero = non_zero(modelFit = modelFit,
-                    varNames = varNames,
-                    p = p,
-                    B = B)
+ # nonZero = non_zero(modelFit = modelFit,
+ #                   varNames = varNames,
+ #                   p = p,
+ #                   B = B)
 
   medDist = med_dist(modelFit = modelFit, # Finished
                     varNames = varNames,
@@ -59,6 +59,8 @@ parspas = function(x,
                      varNames = varNames,
                      p = p,
                      B = B)
+
+  base::return(avgVal)
 }
 
 ##########
@@ -151,6 +153,7 @@ avg_rank_var = function(modelFit, varNames, p, B){
 
 metric_clust = function(metric){
   distMet = stats::dist(x = metric)
-  hclustMet = stats::hclust(d = distMet)
-
+  hClustMet = stats::hclust(d = distMet) %>%
+    ggdendro::dendro_data(model = .)
+  base::return(hClustMet)
 }
