@@ -8,7 +8,7 @@ parspas = function(x,
                    family){
   n = base::nrow(x) # Number of observations
   p = bas::ncol(x) # Number of variables
-  varNames = base::colanmes(X) # Variable names
+  varNames = base::colnames(x) # Variable names
 
   bootWeights = base::matrix(stats::rexp(n = n*B,
                                      rate = 1),
@@ -22,8 +22,8 @@ parspas = function(x,
                             y = y,
                             family = family,
                             weights = bootWeights[,b])
-    lambdaMin =
-    lambdaMax =
+    lambdaMin = GLMFit$lambda[base::which.min(GLMFit$df < 6)]
+    lambdaMax =GLMFit$lambda[base::which.max(GLMFit$df > 1)]
     lambdaVector = 1 - c(base::seq(from = 0,
                                    to = 1,
                                    length.out = c),
@@ -37,8 +37,28 @@ parspas = function(x,
     GLMAdjust = stats::coef(GLMFit,
                             s = lambdaAdjust)[-1,]
     modelFit[[b]] = GLMAdjust %>%
-      base::as.matrix(data = .)
+      base::as.matrix(x = .)
   }
+
+  avgVal = avg_val(modelFit = modelFit, # Finished
+                   varNames = varNames,
+                   p = p,
+                   B = B)
+
+  nonZero = non_zero(modelFit = modelFit,
+                    varNames = varNames,
+                    p = p,
+                    B = B)
+
+  medDist = med_dist(modelFit = modelFit, # Finished
+                    varNames = varNames,
+                    p = p,
+                    B = B)
+
+  avgRankVar = avg_rank_var(modelFit = modelFit, # Finished
+                     varNames = varNames,
+                     p = p,
+                     B = B)
 }
 
 ##########
@@ -67,7 +87,7 @@ non_zero = function(modelFit, varNames, p, B){
 ##########
 
 # Function to calculate the distance of a curve from the median curve.
-med_dist = function(modelFit, varNames, p, b){
+med_dist = function(modelFit, varNames, p, B){
   medDist = base::matrix(data = NA_real_,
                         nrow = p,
                         ncol = B)
@@ -122,9 +142,15 @@ avg_rank_var = function(modelFit, varNames, p, B){
                           ties.method = "random")
     avgRankVar[,b] = base::apply(X = rankMat,
                                  MARGIN = 1,
-                                 FUN = base::var)
+                                 FUN = stats::var)
   }
   base::return(avgRankVar)
 }
 
 ##########
+
+metric_clust = function(metric){
+  distMet = stats::dist(x = metric)
+  hclustMet = stats::hclust(d = distMet)
+
+}
