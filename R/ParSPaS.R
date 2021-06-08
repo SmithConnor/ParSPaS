@@ -15,15 +15,37 @@ parspas = function(x,
                          nrow = n,
                          ncol = B) #Exponential bootstrap weights
 
+  rawModelFit = base::list()
   modelFit = base::list()
 
-  for(b in 1:B){
+  AIC = base::rep(x = NA_real_,
+                  times = B)
+  BIC = base::rep(x = NA_real_,
+                  times = B)
+
+  AICd = base::rep(x = NA_integer_,
+                  times = B)
+  BICd = base::rep(x = NA_integer_,
+                  times = B)
+
+  for(b in 1:B){ # Calculate d_min and d_max
     GLMFit = glmnet::glmnet(x = x,
                             y = y,
                             family = family,
                             weights = bootWeights[,b])
-    lambdaMin = GLMFit$lambda[base::which.min(GLMFit$df < 6)]
-    lambdaMax =GLMFit$lambda[base::which.max(GLMFit$df > 1)]
+    rawModelFit[[b]] = GLMFit
+
+    }
+
+  lambdaMin = base::rep(x = NA_real_,
+                        times = B)
+  lambdaMax = base::rep(x = NA_real_,
+                        times = B)
+
+  for(b in 1:B){
+    GLMFit = rawModelFit[[b]]
+    lambdaMin[b] = GLMFit$lambda[base::which.min(GLMFit$df < 6)]
+    lambdaMax[b] = GLMFit$lambda[base::which.max(GLMFit$df > 1)]
     lambdaVector = 1 - c(base::seq(from = 0,
                                    to = 1,
                                    length.out = c),
@@ -33,7 +55,7 @@ parspas = function(x,
       base::unique(x = .) %>%
       base::sort(x = .)
 
-    lambdaAdjust = lambdaVector*(lambdaMax - lambdaMin) + lambdaMin
+    lambdaAdjust = lambdaVector*(lambdaMax[b] - lambdaMin[b]) + lambdaMin[b]
     GLMAdjust = stats::coef(GLMFit,
                             s = lambdaAdjust)[-1,]
     modelFit[[b]] = GLMAdjust %>%
@@ -45,10 +67,12 @@ parspas = function(x,
                    p = p,
                    B = B)
 
- # nonZero = non_zero(modelFit = modelFit,
- #                   varNames = varNames,
- #                   p = p,
- #                   B = B)
+  nonZero = non_zero(rawModelFit = rawModelFit,
+                     lambdaMin = lambdaMin,
+                     LambdaMax = lambdaMax,
+                     varNames = varNames,
+                     p = p,
+                     B = B)
 
   medDist = med_dist(modelFit = modelFit, # Finished
                     varNames = varNames,
@@ -60,7 +84,12 @@ parspas = function(x,
                      p = p,
                      B = B)
 
-  base::return(avgVal)
+  base::return(list(lambdaMin = lambdaMin,
+                    lambdaMax = lambdaMax,
+                    avgVal = avgVal,
+                    nonZero = nonZero,
+                    medDist = medDist,
+                    avgRankVar = avgRankVar))
 }
 
 ##########
@@ -82,8 +111,32 @@ avg_val = function(modelFit, varNames, p, B){
 
 ##########
 
-non_zero = function(modelFit, varNames, p, B){
+non_zero = function(rawModelFit, lambdaMin, LambdaMax, varNames, p, B){
+  nonZero = base::matrix(data = NA_real_,
+                         nrow = p,
+                         ncol = B)
+  for(b in 1:B){
+  count = which(rawModelFit[[b]]$lambda >= lambdaMin[b] & rawModelFit[[b]]$lambda <= lambdaMax[b])
+  lambdaVector = rawModelFit[[b]]$lambda[count]
+  coefMatrix = rawModelFit[[b]]$beta[,count]
+  zeroLength = base::apply(X = coefMatrix,
+                           MARGIN = 1,
+                           FUN = count_zero,
+                           lmbdVector = lambdaVector)
+  nonZero[,b] = zeroLength
+  }
+  base::return(nonZero)
+}
 
+#####
+
+count_zero = function(cfVector, lmbdVector){
+  totalLength = base::sum(base::diff(lmbdVector))
+  checkVector = base::diff(lmbdVector)
+  whichZero = base::which(cfVector == 0)
+  zeroLength = base::diff(lmbdVector[whichZero])
+  checkedLength = base::sum(zeroLength[zeroLength %in% checkVector])
+  base::return(1 - checkedLength/totalLength)
 }
 
 ##########
