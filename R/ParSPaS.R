@@ -1,5 +1,5 @@
 #' The ParSPaS Function
-#' @param
+#' @export
 
 parspas = function(x,
                    y,

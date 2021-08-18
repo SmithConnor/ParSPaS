@@ -1,5 +1,6 @@
 #' Plotting Functions
 #' @param hClustMet
+#' @export
 
 
 plot_parspas = function(hClustMet){
