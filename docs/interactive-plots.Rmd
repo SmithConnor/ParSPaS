@@ -1,7 +1,7 @@
 ---
-title: "Interactive Plots"
+title: "interactive-plots"
 output: rmarkdown::html_vignette
-vignette: |
+vignette: >
   %\VignetteIndexEntry{interactive-plots}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}

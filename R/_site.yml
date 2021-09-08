@@ -1,0 +1,8 @@
+name: "parspas-website"
+navbar:
+  title: "ParSPaS: Partial Solution Path Stability"
+left:
+  - text: "Simple Example"
+  href: simple-example.html
+- text: "Interactive Plots"
+  href: interactive-plots.html
