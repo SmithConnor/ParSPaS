@@ -51,4 +51,4 @@ output = ParSPaS::parspas(x = x,
 ParSPaS::combine_plot(output$plots)
 ```
 
-![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](man/figures/README-unnamed-chunk-3-1.png)<!-- -->
