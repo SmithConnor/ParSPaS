@@ -2,7 +2,8 @@ Package: ParSPaS
 Type: Package
 Title: Partial Solution Path Stability
 Version: 0.1.0
-Author@R: person("Connor", "Smith", email = "connor.smith@sydney.edu.au", role = c("aut", "cre"))
+Author: Connor Smith
+Maintainer: Connor Smith <connor.smith@sydney.edu.au>
 Description: This is a R package for the implimentation of the ParSPaS framework.
 License: What license is it under?
 Encoding: UTF-8
@@ -14,8 +15,11 @@ Imports:
   glmnet,
   magrittr,
   ggdendro,
-  ggplot2
+  ggplot2,
+  psych,
+  stringr
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: knitr
+RoxygenNote: 7.1.1
