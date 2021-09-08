@@ -1,4 +1,5 @@
 #' The ParSPaS Function
+<<<<<<< HEAD
 #' @param x
 #' @param y
 #' @param B
@@ -8,6 +9,8 @@
 #'
 #' @return
 #'
+=======
+>>>>>>> aaceb0708f10b226b63380609d5a5c683356f963
 #' @export
 
 parspas = function(x,
