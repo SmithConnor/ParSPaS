@@ -19,7 +19,8 @@ Imports:
   psych,
   stringr,
   dplyr,
-  gridExtra
+  gridExtra,
+  ggpubr
 Suggests: 
     knitr,
     rmarkdown

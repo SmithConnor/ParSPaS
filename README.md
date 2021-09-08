@@ -48,5 +48,7 @@ output = ParSPaS::parspas(x = x,
                           I = 20,
                           family = "binomial",
                           seed = 1234)
-#ParSPaS::combine_plot(output)
+ParSPaS::combine_plot(output$plots)
 ```
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->

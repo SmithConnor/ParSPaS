@@ -88,30 +88,10 @@ model_plot = function(plot, model){
 #'@export
 
 combine_plot = function(list){
-  gridExtra::grid.arrange(gridExtra::grid.arrange(list$avgPlot, list$nonPlot, nrow = 2),
-                         list$allPlot,
-                                     gridExtra::grid.arrange(list$medPlot, list$varPlot, nrow = 2),
-                                     nrow = 1, widths = c(1,1.5,1))
-}
+  bigPlot = ggpubr::ggarrange(ggpubr::ggarrange(list$avgPlot, list$nonPlot, nrow = 2),
+                    list$allPlot,
+                    ggpubr::ggarrange(list$medPlot, list$varPlot, nrow = 2),
+                    ncol = 3, widths = c(1,1.5,1))
 
-#' Change the variables in the base model
-#'@param list
-#'
-#'@retun
-#'
-#'@export
-
-change_plot = function(plot, var, add = TRUE){
-
-}
-
-#' Change the entire base model
-#'@param list
-#'
-#'@retun
-#'
-#'@export
-
-change_plot = function(plot, var, add = TRUE){
-
+  return(bigPlot)
 }
