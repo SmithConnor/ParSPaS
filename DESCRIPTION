@@ -18,7 +18,8 @@ Imports:
   ggplot2,
   psych,
   stringr,
-  dplyr
+  dplyr,
+  gridExtra
 Suggests: 
     knitr,
     rmarkdown

@@ -4,7 +4,7 @@
 \alias{non_zero}
 \title{Non Zero Function}
 \usage{
-non_zero(rawModelFit, lambdaMin, LambdaMax, varNames, p, B)
+non_zero(rawModelFit, lambdaMin, lambdaMax, varNames, p, B)
 }
 \description{
 Non Zero Function

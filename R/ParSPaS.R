@@ -92,56 +92,52 @@ parspas = function(x,
                    p = p,
                    B = B)
   avgClust = metric_clust(avgVal)
-  avgPlot = plot_parspas(hClustMet = avgClust,
+  avgPlot = suppressWarnings(plot_parspas(hClustMet = avgClust,
                          baseModel = baseModel,
                          title = "Average",
-                         varNames = varNames)
+                         varNames = varNames))
 
   nonZero = non_zero(rawModelFit = rawModelFit,
                      lambdaMin = lambdaMin,
-                     LambdaMax = lambdaMax,
+                     lambdaMax = lambdaMax,
                      varNames = varNames,
                      p = p,
                      B = B)
   rownames(nonZero) = varNames
   nonClust = metric_clust(nonZero)
-  nonPlot = plot_parspas(hClustMet = nonClust,
+  nonPlot = suppressWarnings(plot_parspas(hClustMet = nonClust,
                          baseModel = baseModel,
                          title = "Non-Zero",
-                         varNames = varNames)
+                         varNames = varNames))
 
-  medDist = med_dist(modelFit = modelFit, # Finished
+  medDist = suppressWarnings(med_dist(modelFit = modelFit, # Finished
                     varNames = varNames,
                     p = p,
-                    B = B)
+                    B = B))
   medClust = metric_clust(medDist)
-  medPlot = plot_parspas(hClustMet = medClust,
+  medPlot = suppressWarnings(plot_parspas(hClustMet = medClust,
                          baseModel = baseModel,
                          title = "Median Curve",
-                         varNames = varNames)
+                         varNames = varNames))
 
-  avgRankVar = avg_rank_var(modelFit = modelFit, # Finished
+  avgRankVar = suppressWarnings(avg_rank_var(modelFit = modelFit, # Finished
                      varNames = varNames,
                      p = p,
-                     B = B)
+                     B = B))
   varClust = metric_clust(avgRankVar)
-  varPlot = plot_parspas(hClustMet = varClust,
+  varPlot = suppressWarnings(plot_parspas(hClustMet = varClust,
                          baseModel = baseModel,
                          title = "Rank Variance",
-                         varNames = varNames)
+                         varNames = varNames))
   allMetrics = list(avgVal = avgVal,
                     nonZero = nonZero,
                     medDist = medDist,
                     avgRankVar = avgRankVar)
   allClust = cluster_all(allMetrics)
-  allPlot = plot_parspas(hClustMet = allClust,
+  allPlot = suppressWarnings(plot_parspas(hClustMet = allClust,
                          baseModel = baseModel,
                          title = "All Metrics",
-                         varNames = varNames)
-  finalPlot = grid.arrange(grid.arrange(avgPlot[[1]], nonPlot[[1]], nrow = 2),
-                           allPlot[[1]],
-                           grid.arrange(medPlot[[1]], varPlot[[1]], nrow = 2),
-                           nrow = 1, widths = c(1,1.5,1))
+                         varNames = varNames))
 
   base::return(list(lambdaMin = lambdaMin,
                     lambdaMax = lambdaMax,
@@ -159,7 +155,6 @@ parspas = function(x,
                                  medPlot = medPlot[[1]],
                                  varPlot = varPlot[[1]],
                                  allPlot = allPlot[[1]]),
-                    fullPlot = finalPlot,
                     baseModel = baseModel,
                     varNames = varNames,
                     seed = seed))
@@ -195,7 +190,7 @@ avg_val = function(modelFit, varNames, p, B){
 #'@param p
 #'@param B
 
-non_zero = function(rawModelFit, lambdaMin, LambdaMax, varNames, p, B){
+non_zero = function(rawModelFit, lambdaMin, lambdaMax, varNames, p, B){
   nonZero = base::matrix(data = NA_real_,
                          nrow = p,
                          ncol = B)
