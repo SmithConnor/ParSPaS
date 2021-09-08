@@ -1,5 +1,4 @@
 #' The ParSPaS Function
-<<<<<<< HEAD
 #' @param x
 #' @param y
 #' @param B
@@ -7,10 +6,10 @@
 #' @param family
 #' @param seed
 #'
+#' @importFrom dplyr %>%
+#'
 #' @return
 #'
-=======
->>>>>>> aaceb0708f10b226b63380609d5a5c683356f963
 #' @export
 
 parspas = function(x,
@@ -45,10 +44,10 @@ parspas = function(x,
                         times = p)
 
   for(b in 1:B){
-    GLMFit = glmnet::cv.glmnet(x = x,
+    GLMFit = suppressWarnings(glmnet::cv.glmnet(x = x,
                                y = y,
                                family = family,
-                               weights = bootWeights[,b])
+                               weights = bootWeights[,b]))
     rawModelFit[[b]] = GLMFit
     coef = coef(GLMFit, s = 'lambda.1se')[-1]
     coefBin = (coef != 0)/B
@@ -82,8 +81,8 @@ parspas = function(x,
       base::sort(x = .)
 
     lambdaAdjust = lambdaVector*(lambdaMax[b] - lambdaMin[b]) + lambdaMin[b]
-    GLMAdjust = stats::coef(GLMFit,
-                            s = lambdaAdjust)[-1,]
+    GLMAdjust = suppressWarnings(stats::coef(GLMFit,
+                            s = lambdaAdjust))[-1,]
     modelFit[[b]] = GLMAdjust %>%
       base::as.matrix(x = .)
   }
@@ -311,6 +310,7 @@ metric_clust = function(metric){
 
 #'Multi-Metric Clustering Function
 #'@param metricList
+#'@importFrom dplyr %>%
 
 cluster_all = function(metricList){
   varNames = rownames(metricList[[1]])

@@ -17,7 +17,8 @@ Imports:
   ggdendro,
   ggplot2,
   psych,
-  stringr
+  stringr,
+  dplyr
 Suggests: 
     knitr,
     rmarkdown

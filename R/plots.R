@@ -1,6 +1,5 @@
 #' Plotting Functions
 #' @param hClustMet
-<<<<<<< HEAD
 #' @param baseModel
 #' @param thresh
 #' @param title
@@ -53,9 +52,8 @@ model_plot = function(plot, model){
     left_join(hClustMet$labels, by = 'x') %>%
     rename(variable_name = label) %>%
     left_join(base, by = 'variable_name')
-=======
+
 #' @export
->>>>>>> aaceb0708f10b226b63380609d5a5c683356f963
 
 
   labs = ggdendro::label(x = hClustMet)
